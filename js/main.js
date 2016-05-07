@@ -7,20 +7,15 @@ $.getScript("lib/backbone.js", function(){
       events : {
         'click .get-user' : 'findUser' 
       },
-      findUser : function () {          
-          var _json = $.get("http://localhost:8000/api/code/?owner=" + $('.account_input').val(),
-          
-          //success callback 
+      findUser : function () {
+          var username = $('.account_input').val();
+          $('.form-group').html("<i class='fa fa-refresh fa-spin fa-5x fa-fw margin-bottom'></i><br><h2>Generating</h2>");
+          $.get("http://localhost:8000/api/code/?owner=" + username,
           function (data){
-          //render shit
-          console.log(_json);
-          debugger;
-          $('.swag').html(_json.responseJSON.blog);
-          
+            console.log(data); 
+            //REPLACE .FORM-GROUP WITH ANALYSIS
           })
-          //fail callback
-          .fail(function(err) {
-            console.log(err)
+          .fail(function(err) { 
           });
                  
       },
