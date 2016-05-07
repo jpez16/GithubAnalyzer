@@ -18,18 +18,18 @@ module.exports = function(router, request, config) {
 			}
 
 
-
+			res.send(repositories[2]);
 			// res.send(body);
 
 		});
 	};
 
-	var getCommits = function(){
-		request.get({
+	// var getCommits = function(){
+	// 	request.get({
 			
 
-		})
-	}
+	// 	})
+	// }
 
 
 
