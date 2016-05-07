@@ -6,7 +6,7 @@ module.exports = function(router, request, config) {
 	var getData = function(){	
 		request.get({
 			url: url,
-			headers: { 'user-agent': 'git-technetium' },
+			headers: { 'user-agent': 'git-technetium'},
 			json: true
 		}, function(error, response, body) {
 			console.log(error);
