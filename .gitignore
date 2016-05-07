@@ -1,2 +1,9 @@
 .DS_Store
 node_modules
+
+# Temporary files #
+###################
+*.swp
+*.swo
+*.kate-swp
+*.*~
