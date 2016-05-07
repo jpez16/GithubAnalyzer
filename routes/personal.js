@@ -3,7 +3,12 @@ module.exports = function(router, request, config) {
 	
 	var parse = require('parse-diff');
 
-	var jsonReturn = {'abc':'def'}; 
+	var jsonReturn = {}; 
+	var commits =1; 
+	var collaborators =1; 
+	var analysis ={};
+	var additions =0; 
+	var deletions=0; 
 
 	var url = 'https://api.github.com/users/' + req.query.owner + '/repos?' + 
 			'client_id=' + config.CLIENT_ID + '&client_secret=' + config.CLIENT_SECRET;
@@ -18,10 +23,26 @@ module.exports = function(router, request, config) {
 
 			var repositories = []; 
 
-			// for (var i=0; i<body.length; i++){
-				repositories[0]=body[1].name;
-				callback(repositories[0], compareCallback);
-			// }
+			for (var i=0; i<body.length; i++){
+				repositories[i]=body[i].name;
+				if(!body[i].fork){
+					callback(repositories[i], compareCallback);
+							// jsonReturn.name=body[i].name;
+							// jsonReturn.commits=commits; 
+							// jsonReturn.collaborators=collaborators;
+
+
+					// analysis = {'linesAdded': additions, 'linesDeleted': deletions};
+
+
+					// jsonReturn.analysis = analysis;
+
+
+					// console.log(jsonReturn);
+				} 
+
+
+			}
 
 
 			res.send(body);
@@ -39,20 +60,55 @@ module.exports = function(router, request, config) {
 			json: true
 		}, function(error, response, body) {
 
-			var commitList = []; 
 			console.log(repoName);
-
+			var add = 0;
+			var del =0; 
+			var counter =0; 
 			for(var i=0; i<body.length-1; i++){
 			try{
-				var headAuthor=body[0].committer.login; 
+
+				var headAuthor=body[i].committer.login; 
 
 				if (headAuthor==req.query.owner)
 				{
-					var base = body[0].sha; 
-					var head = body[i+1].sha;
-					// var head = body[1].sha;  
 
-					compareCallback(repoName, head, base);
+
+					var base = body[i].sha; 
+					var head = body[i+1].sha;
+ 
+					commits+=1; 
+					compareCallback(repoName, head, base, function(data, data2){
+						// do something with data
+							add += data;
+							del+= data2; 
+							counter++; 
+							if (counter==body.length-1)
+							{
+							jsonReturn.name=repoName;
+							jsonReturn.commits=commits; 
+							jsonReturn.collaborators=collaborators;
+
+
+							analysis = {'linesAdded': add, 'linesDeleted': del};
+
+
+							jsonReturn.analysis = analysis;
+
+							jsonReturn.gitScore = 10*Math.random(); 
+
+
+							console.log(jsonReturn);
+
+							commits=0; 
+							collaborators=0; 
+							}
+					});
+
+					//compareCallback(repoName, head, base, additions, deletions);
+
+				}
+				else {
+					collaborators+=1; 
 				}
 			}
 
@@ -60,16 +116,16 @@ module.exports = function(router, request, config) {
 			{
 				console.log(err);
 			}
-				console.log(commitList[i]);
 
 			}
+
 			console.log('\n');
 
 		});
 	};
 
 
-	var compareCommits = function(repoName, head, base)
+	var compareCommits = function(repoName, head, base, callback)
 	{
 		var compareUrl = 'https://api.github.com/repos/' + req.query.owner + '/' + repoName + '/compare/' + head + '...' + base +'?' + 
 			'client_id=' + config.CLIENT_ID + '&client_secret=' + config.CLIENT_SECRET; 
@@ -78,38 +134,25 @@ module.exports = function(router, request, config) {
 			headers:{ 'user-agent': 'git-technetium', 'Accept': 'application/vnd.github.VERSION.diff'},
 			json: true
 		}, function(error, response, body) {
-			constructJson(repoName, body);
+
+			var diff = body; // input diff string 
+			var files = parse(diff);
+			var add =0; 
+			var del =0; 
 
 
-			
+				files.forEach(function(file) {
+
+				add+=file.additions; 
+				del+=file.deletions; 
+				callback(add, del);
+			});
 
 		});
 
 
 	};
 
-	var constructJson = function(repoName, input)
-	{
-		var diff = input; 
-		var files = parse(diff);
-		console.log("NUMFILES " + files); 
-
-		files.forEach(function(file) {
-		console.log('num of chunks ' + file.chunks.length); // number of hunks 
-		// console.log('chunk added/deleted ' + file.chunks[0].changes) // hunk added/deleted/context lines 
-		// each item in changes is a string 
-
-		for (var key in file.chunks[0].changes)
-		{
-			console.log(file.chunks[0].changes[key]);
-		}
-		console.log('num of deletions ' + file.deletions); // number of deletions in the patch 
-		console.log('num of additions ' + file.additions); // number of additions in the patch 
-		console.log('fileName ' + JSON.stringify(file.chunks[0] )	);
-
-
-	});
-	};
 
 	getRepos(getCommits, compareCommits);
 	});
