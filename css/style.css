@@ -37,7 +37,10 @@ p{
 .lead{
 	font-weight: 300;
 }
-
+.devicon {
+  margin:30px;
+  font-size: 10.5rem;
+}
 button {
 	display: inline-block;
 	margin-bottom: 0;
