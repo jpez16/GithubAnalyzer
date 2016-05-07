@@ -16,9 +16,14 @@ $.getScript("lib/backbone.js", function(){
           function (data){
               setTimeout(function(){
               console.log(data);
-              $('.generating').hide();
+              $('.generating').hide(); 
+              var result = JSON.parse(data);
+              var template = _.template( $(".report").html(), {
+                result : result 
+              } );
+              this.$('.report').html( template );
               $('.report').fadeIn();
-            }, 2000);
+              }, 2000);
           })
           .fail(function(err) { 
           });
@@ -27,11 +32,10 @@ $.getScript("lib/backbone.js", function(){
       // $el - it's a cached jQuery object (el), in which you can use jQuery functions
       //       to push content. Like the Hello World in this case.
       render: function(){
-                debugger;
-        //$el.html("good to go yo");
-      }
+      
+              }
     });
     $(document).ready(new AppView({ 
-      el: $('.enter-user')
+      el: $('body')
     }));
 });
