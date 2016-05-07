@@ -40,7 +40,6 @@ var authorization_uri = oauth2.authCode.authorizeURL({
   state: '3(#0/!~'
 });
 
-<<<<<<< HEAD
 // Initial page redirecting to Github
 app.get('/auth', function (req, res) {
     res.redirect(authorization_uri);
