@@ -9,16 +9,16 @@ module.exports = function(router, request, config) {
 	var getData = function(){	
 		request.get({
 			url: url,
-			//headers: { 'user-agent': 'git-technetium' },
+			headers: { 'user-agent': 'git-technetium' },
 			json: true
 		}, function(error, response, body) {
 			//if(!error && response.statusCode === 200) {
-			console.log(body);
 			console.log(error);
-				//res.send(body);
+			res.send(body);
 			//}
 		});
 	};
+	getData();
 	});
 };
 
