@@ -2,12 +2,12 @@ var express = require('express'),
     request = require('request'),
     config = require('./config'),
     fs = require('fs'),
-	path = require('path'),
-	bodyParser = require('body-parser'), 
-	crypto = require('crypto');
+  	path = require('path'),
+  	bodyParser = require('body-parser'), 
+  	crypto = require('crypto');
 
 var app = express();
-
+var token = null;
 app.use('/', express.static(path.join(__dirname, '')));
 app.use(bodyParser.json());
 
@@ -15,6 +15,11 @@ var router = express.Router();
 require('./routes/code')(router, request, config);
 require('./routes/publicrepo')(router, request, config);
 require('./routes/personal')(router, request, config);
+
+app.use('/token', function (req, res) { 
+  console.log(res);
+  res.end();
+});
 
 app.use('/api', router);
 
@@ -40,10 +45,19 @@ var authorization_uri = oauth2.authCode.authorizeURL({
   state: '3(#0/!~'
 });
 
-<<<<<<< HEAD
-// Initial page redirecting to Github
+
+app.get('/', function (req, res) {
+    if(!token == null){
+      res.redirect('/app');
+    }
+});
+  // Initial page redirecting to Github
 app.get('/auth', function (req, res) {
     res.redirect(authorization_uri);
+});
+
+app.get('/app', function (req, res) {
+    res.sendfile('app.html');
 });
 
 // Callback service parsing the authorization token and asking for the access token
@@ -57,12 +71,8 @@ app.get('/callback', function (req, res) {
   function saveToken(error, result) {
     if (error) { console.log('Access Token Error', error.message); }
     token = oauth2.accessToken.create(result);
-    res.redirect('/');
+    res.redirect('/app');
   }
-});
-
-app.get('/login', function(req ,res){
-	res.send('<a href="/auth">Log in with Github</a>');
 });
 app.listen(config.PORT, 'localhost', function() {
 		    console.log('Express server started on localhost: ' + config.PORT);
