@@ -11,7 +11,7 @@ $.getScript("lib/backbone.js", function(){
       //       to push content. Like the Hello World in this case.
       render: function($el){
         console.log($el);
-        $el.html("good to go yo");
+        //$el.html("good to go yo");
       }
     });
     $(document).ready(new AppView());
