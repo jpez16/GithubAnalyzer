@@ -8,13 +8,14 @@ $.getScript("lib/backbone.js", function(){
         'click .get-user' : 'findUser' 
       },
       findUser : function () {          
-        debugger;
           var _json = $.get("http://localhost:8000/api/code/?owner=" + $('.account_input').val(),
           
           //success callback 
           function (data){
           //render shit
           console.log(_json);
+          debugger;
+          $('.swag').html(_json.responseJSON.blog);
           
           })
           //fail callback
