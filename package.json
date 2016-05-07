@@ -1,0 +1,19 @@
+{
+  "name": "githubanalyzer",
+  "version": "1.0.0",
+  "description": "Analyze github content",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justinpezzack/GithubAnalyzer.git"
+  },
+  "author": "Ethan Liang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justinpezzack/GithubAnalyzer/issues"
+  },
+  "homepage": "https://github.com/justinpezzack/GithubAnalyzer#readme"
+}
