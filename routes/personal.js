@@ -3,6 +3,8 @@ module.exports = function(router, request, config) {
 	
 	var parse = require('parse-diff');
 
+	var finalJson={}; 
+
 	var jsonReturn = {}; 
 	var commits =1; 
 	var collaborators =1; 
@@ -44,8 +46,6 @@ module.exports = function(router, request, config) {
 
 			}
 
-
-			res.send(body);
 
 		});
 	};
@@ -89,18 +89,20 @@ module.exports = function(router, request, config) {
 							jsonReturn.collaborators=collaborators;
 
 
-							analysis = {'linesAdded': add, 'linesDeleted': del};
+							analysis = {'filesAdded': 3, 'linesAdded': add, 'linesDeleted': del, 'similarityRating': (Math.random() * 11) + 2};
 
 
 							jsonReturn.analysis = analysis;
 
+
 							jsonReturn.gitScore = 10*Math.random(); 
 
 
-							console.log(jsonReturn);
+							finalJson.personal =jsonReturn;
 
-							commits=0; 
-							collaborators=0; 
+							res.send(finalJson);
+							console.log(finalJson);
+
 							}
 					});
 
