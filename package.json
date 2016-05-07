@@ -24,6 +24,7 @@
     "request": "^2.72.0"
   },
   "dependencies": {
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "request": "^2.37.0"
   }
 }
