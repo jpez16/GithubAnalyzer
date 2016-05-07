@@ -1,7 +1,9 @@
+$.getScript("lib/backbone.js", function(){    
+
     var AppView = Backbone.View.extend({
       // el - stands for element. Every view has a element associate in with HTML
       //      content will be rendered.
-      el: '#container',
+      el: '#test',
       // It's the first function called when this view it's instantiated.
       initialize: function(){
         this.render();
@@ -12,3 +14,4 @@
         this.$el.html("Hello World");
       }
     });
+});
