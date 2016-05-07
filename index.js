@@ -7,12 +7,12 @@ var app = express();
 
 app.set('port', (process.env.PORT || 8080));
 
-app.use('/', express.static(path.join(__dirname, './')));
+app.use('/', express.static(path.join(__dirname, '')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 request.post({
-        url: 'https://www.google.ca',
+        url: 'https://api.github.com',
          body: "mes=heydude"
          }, function(error, response, body){
             console.log(body);
