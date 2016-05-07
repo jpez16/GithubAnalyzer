@@ -12,12 +12,6 @@ app.use('/', express.static(path.join(__dirname, '')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-request.post({
-        url: 'https://api.github.com',
-         body: "mes=heydude"
-         }, function(error, response, body){
-            console.log(body);
-    });
 
 
 

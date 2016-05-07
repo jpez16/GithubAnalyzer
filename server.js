@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 var router = express.Router();
 require('./routes/code')(router, request, config);
 require('./routes/publicrepo')(router, request, config);
+require('./routes/personal')(router, request, config);
+
 app.use('/api', router);
 
 var GitHubApi = require('github');
@@ -38,6 +40,7 @@ var authorization_uri = oauth2.authCode.authorizeURL({
   state: '3(#0/!~'
 });
 
+<<<<<<< HEAD
 // Initial page redirecting to Github
 app.get('/auth', function (req, res) {
     res.redirect(authorization_uri);
@@ -64,35 +67,39 @@ app.get('/login', function(req ,res){
 app.listen(config.PORT, 'localhost', function() {
 		    console.log('Express server started on localhost: ' + config.PORT);
 });
-var initialSort = function(input){
-	if (newFile)
-	{
+//var initialSort = function(input){
+//	if (newFile)
+//	{
 
-	}
+// var initialSort = function(input){
+// 	if (newFile)
+// 	{
 
-	else(change)
-	{
+// 	}
 
-	}
+// 	else(change)
+// 	{
 
-}
+// 	}
 
-var hashCheck = function(input){
+// }
 
-	var fd = fs.createReadStream('./testFileCompare/bootstrap.min.css');
+// var hashCheck = function(input){
 
-	var hash = crypto.createHash('sha1');
-	hash.setEncoding('hex');
+// 	var fd = fs.createReadStream('./testFileCompare/bootstrap.min.css');
 
-	fd.on('end', function() {
-	    hash.end();
-	    console.log(hash.read());
-	});
+// 	var hash = crypto.createHash('sha1');
+// 	hash.setEncoding('hex');
 
-	fd.pipe(hash);
+// 	fd.on('end', function() {
+// 	    hash.end();
+// 	    console.log(hash.read());
+// 	});
 
-}; 
+// 	fd.pipe(hash);
 
-var codeCheck = function(input){
+// }; 
 
-};
+// var codeCheck = function(input){
+
+// };
