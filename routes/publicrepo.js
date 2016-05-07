@@ -2,16 +2,18 @@ module.exports = function(router, request, config) {
 	router.get('/publicrepo', function(req, res){
 	var publicrepo = [];
 	var contributorList = []; 
-	var getContributors = function(fullName){
+	var getContributors = function(fullName, callback){
 		var url = 'https://api.github.com/repos/' + fullName+ '/contributors' + '?' 			+ 'client_id=' + config.CLIENT_ID + '&client_secret=' + config.CLIENT_SECRET;
 		request.get({
 			url: url,
 			headers: { 'user-agent': 'velocity' },
 			json: true
 		}, function(error, response, body) {
-			contributorList.push(response);
+			callback(body);
+			//contributorList.push(body);
 		});
 	};
+
 	var getData = function(){	
 		var url = 'https://api.github.com/users/' + req.query.owner + '/repos' + '?' + 
 			'client_id=' + config.CLIENT_ID + '&client_secret=' + config.CLIENT_SECRET;
@@ -40,8 +42,7 @@ module.exports = function(router, request, config) {
 				for (var i = 0; i < publicrepo.length; i++) {
 					points = points + publicrepo[i].forks;
 				}
-					
-				//res.send(publicrepo);
+				res.send(publicrepo);
 			}
 			
 		});

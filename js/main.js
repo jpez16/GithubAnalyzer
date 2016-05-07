@@ -8,6 +8,7 @@ $.getScript("lib/backbone.js", function(){
         'click .get-user' : 'findUser' 
       },
       findUser : function () {
+                   debugger;
           var username = $('.account_input').val();
           $('.form-group').hide();
           $('.generating').html("<i class='fa fa-refresh fa-spin fa-5x fa-fw margin-bottom'></i><br><h2 style='color:white'>Generating</h2>");
