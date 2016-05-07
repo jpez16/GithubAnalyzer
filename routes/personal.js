@@ -1,8 +1,9 @@
 module.exports = function(router, request, config) {
 	router.get('/personal', function(req, res){
-	var profileInfo = [];
+	
+	var parse = require('parse-diff');
 
-	var jsonReturn; 
+	var jsonReturn = {'abc':'def'}; 
 
 	var url = 'https://api.github.com/users/' + req.query.owner + '/repos?' + 
 			'client_id=' + config.CLIENT_ID + '&client_secret=' + config.CLIENT_SECRET;
@@ -43,12 +44,13 @@ module.exports = function(router, request, config) {
 
 			for(var i=0; i<body.length-1; i++){
 			try{
-				var headAuthor=body[i].committer.login; 
+				var headAuthor=body[0].committer.login; 
 
 				if (headAuthor==req.query.owner)
 				{
-					var head = body[i].sha; 
-					var base = body[i-1].sha; 
+					var base = body[0].sha; 
+					var head = body[i+1].sha;
+					// var head = body[1].sha;  
 
 					compareCallback(repoName, head, base);
 				}
@@ -58,7 +60,7 @@ module.exports = function(router, request, config) {
 			{
 				console.log(err);
 			}
-				// console.log(commitList[i]);
+				console.log(commitList[i]);
 
 			}
 			console.log('\n');
@@ -88,7 +90,25 @@ module.exports = function(router, request, config) {
 
 	var constructJson = function(repoName, input)
 	{
+		var diff = input; 
+		var files = parse(diff);
+		console.log("NUMFILES " + files); 
 
+		files.forEach(function(file) {
+		console.log('num of chunks ' + file.chunks.length); // number of hunks 
+		// console.log('chunk added/deleted ' + file.chunks[0].changes) // hunk added/deleted/context lines 
+		// each item in changes is a string 
+
+		for (var key in file.chunks[0].changes)
+		{
+			console.log(file.chunks[0].changes[key]);
+		}
+		console.log('num of deletions ' + file.deletions); // number of deletions in the patch 
+		console.log('num of additions ' + file.additions); // number of additions in the patch 
+		console.log('fileName ' + JSON.stringify(file.chunks[0] )	);
+
+
+	});
 	};
 
 	getRepos(getCommits, compareCommits);
